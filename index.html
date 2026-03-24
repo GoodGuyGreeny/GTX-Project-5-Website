@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Drop Catch - Charity: Water Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- START SCREEN -->
+        <div id="start-screen" class="screen start-screen">
+            <span class="floating-drop-1">💧</span>
+            <span class="floating-drop-2">💧</span>
+            <span class="floating-drop-3">💧</span>
+            <div class="start-content">
+                <img src="img/cw_logo.png" alt="charity: water" class="cw-logo">
+                <h1 class="game-title">💧 Water Drop Catch</h1>
+                <p class="game-subtitle">Help bring clean water to communities in need</p>
+
+                <div class="instructions">
+                    <h2>How to Play</h2>
+                    <ul>
+                        <li>Click the <span class="blue-drop">blue drops</span> to collect clean water (+1 point)</li>
+                        <li>Avoid the <span class="brown-drop">brown drops</span> to prevent contamination (-2 points)</li>
+                        <li>Reach the target score before time runs out!</li>
+                    </ul>
+                </div>
+
+                <div class="difficulty-selection">
+                    <h3>Choose Difficulty</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" data-difficulty="easy">
+                            <span class="difficulty-name">Easy</span>
+                            <span class="difficulty-desc">60s • Slow drops • 15 points to win</span>
+                        </button>
+                        <button class="difficulty-btn active" data-difficulty="normal">
+                            <span class="difficulty-name">Normal</span>
+                            <span class="difficulty-desc">45s • Medium drops • 20 points to win</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="hard">
+                            <span class="difficulty-name">Hard</span>
+                            <span class="difficulty-desc">30s • Fast drops • 25 points to win</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="start-game-btn" class="btn btn-primary btn-large">
+                    <span class="btn-text">Start Game</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div id="game-screen" class="screen game-screen hidden">
+            <!-- HERO HEADER - FULL WIDTH -->
+            <header class="hero-header">
+                <div class="hero-content">
+                    <img src="img/cw_logo.png" alt="charity: water" class="cw-logo">
+                    <h1 class="hero-title">💧 Water Drop Catch</h1>
+                    <p class="hero-subtitle">Help bring clean water to communities in need</p>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <div class="container">
+                    <!-- GAME BOARD SECTION -->
+                    <section class="game-board-section">
+                        <!-- GAME HUD -->
+                        <div class="game-hud">
+                            <div class="hud-item">
+                                <span class="hud-label">Score</span>
+                                <span class="hud-value" id="score">0</span>
+                            </div>
+                            <div class="hud-divider"></div>
+                            <div class="hud-item">
+                                <span class="hud-label">Time</span>
+                                <span class="hud-value" id="time">30</span><span class="hud-unit">s</span>
+                            </div>
+                            <div class="hud-divider"></div>
+                            <div class="hud-item">
+                                <span class="hud-label">Target</span>
+                                <span class="hud-value" id="target-score">20</span>
+                            </div>
+                        </div>
+
+                        <!-- GAME AREA -->
+                        <div id="game-container" class="game-area">
+                            <div id="message-display" class="message-display"></div>
+                        </div>
+
+                        <!-- CONTROLS -->
+                        <div class="button-group">
+                            <button id="pause-btn" class="btn btn-secondary">Pause</button>
+                            <button id="quit-btn" class="btn btn-secondary">Quit to Menu</button>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+
+        <!-- PAUSE OVERLAY -->
+        <div id="pause-overlay" class="overlay pause-overlay hidden">
+            <div class="overlay-content pause-content">
+                <h2>Game Paused</h2>
+                <div class="button-group">
+                    <button id="resume-btn" class="btn btn-primary">Resume</button>
+                    <button id="restart-btn" class="btn btn-secondary">Restart</button>
+                    <button id="quit-to-menu-btn" class="btn btn-secondary">Quit to Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WIN OVERLAY -->
+        <div id="win-overlay" class="overlay win-overlay hidden">
+            <div class="overlay-content win-content">
+                <div class="celebration-icon">🎉</div>
+                <h2>You Won!</h2>
+                <p class="win-message">You helped bring clean water to a community in need!</p>
+                <p class="final-stats">Final Score: <span id="final-score-win">0</span> • Time Left: <span id="time-left-win">0</span>s</p>
+                <div class="button-group">
+                    <button id="play-again-win-btn" class="btn btn-primary">Play Again</button>
+                    <button id="menu-win-btn" class="btn btn-secondary">Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAME OVER OVERLAY -->
+        <div id="game-over-overlay" class="overlay game-over-overlay hidden">
+            <div class="overlay-content game-over-content">
+                <h2>Time's Up!</h2>
+                <p class="final-score-label">Final Score:</p>
+                <p class="final-score-value" id="final-score">0</p>
+                <p class="target-message" id="target-message">Target was 20 points</p>
+                <div class="button-group">
+                    <button id="replay-btn" class="btn btn-primary">Try Again</button>
+                    <button id="menu-game-over-btn" class="btn btn-secondary">Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHARITY: WATER FOOTER -->
+        <footer class="charity-footer">
+            <div class="container">
+                <div class="charity-content">
+                    <img src="img/cw_logo-horizontal.png" alt="charity: water" class="footer-logo">
+                    <p class="charity-message">
+                        Every person deserves access to clean water. Your play helps raise awareness for this critical issue.
+                        <strong>1 in 10 people</strong> worldwide lack access to clean drinking water.
+                    </p>
+                    <div class="charity-links">
+                        <a href="https://www.charitywater.org/" target="_blank" class="charity-link">
+                            Learn More About charity: water
+                        </a>
+                        <a href="https://www.charitywater.org/donate" target="_blank" class="charity-link charity-link-primary">
+                            Donate to Clean Water Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
